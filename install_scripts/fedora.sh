@@ -15,7 +15,7 @@ echo -e "${NONE}\n\n"
 
 
 echo -e "::${BPurple}Setting RTC time to use local time${NONE}"
-# sudo timedatectl set-local-rtc 1 --adjust-system-clock
+sudo timedatectl set-local-rtc 1 --adjust-system-clock
 
 echo -e "::${BPurple}Adding aditional DNF config${NONE}"
 sudo cp /etc/dnf/dnf.conf /etc/dnf/dnf.conf.bak
@@ -28,23 +28,23 @@ keepcache=True
 EOT
 
 echo -e "::${BPurple}update distro${NONE}"
-# sudo dnf update
+sudo dnf update
 
 
 echo -e "::${BPurple}setting up RPM fusion repo${NONE}"
-# sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm 
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm 
 
 echo -e "::${BPurple}Updating rpmfusion core${NONE}"
-# sudo dnf groupupdate core
+sudo dnf groupupdate core
 
 echo -e "::${BPurple}Setting up flatpak${NONE}"
-# sudo dnf install flatpak
-# flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+sudo dnf install flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 echo -e "::${BPurple}Optimizing Multimedia codec${NONE}"
-# sudo dnf install ffmpeg libavcodec-freeworld --best --allowerasing
-# sudo dnf groupupdate multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
-# sudo dnf groupupdate sound-and-video
+sudo dnf install ffmpeg libavcodec-freeworld --best --allowerasing
+sudo dnf groupupdate multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+sudo dnf groupupdate sound-and-video
 
 
 
