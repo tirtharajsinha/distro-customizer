@@ -14,10 +14,10 @@ EOF
 echo -e "${NONE}\n\n"
 
 
-echo "::${BPurple}Setting RTC time to use local time${NONE}"
+echo -e "::${BPurple}Setting RTC time to use local time${NONE}"
 # sudo timedatectl set-local-rtc 1 --adjust-system-clock
 
-echo "::${BPurple}Adding aditional DNF config${NONE}"
+echo -e "::${BPurple}Adding aditional DNF config${NONE}"
 sudo cp /etc/dnf/dnf.conf /etc/dnf/dnf.conf.bak
 sudo tee -a /etc/dnf/dnf.conf > /dev/null <<EOT
 # added by auto installation scripts
@@ -27,21 +27,21 @@ defaultyes=True
 keepcache=True
 EOT
 
-echo "::${BPurple}update distro${NONE}"
+echo -e "::${BPurple}update distro${NONE}"
 # sudo dnf update
 
 
-echo "::${BPurple}setting up RPM fusion repo${NONE}"
+echo -e "::${BPurple}setting up RPM fusion repo${NONE}"
 # sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm 
 
-echo "::${BPurple}Updating rpmfusion core${NONE}"
+echo -e "::${BPurple}Updating rpmfusion core${NONE}"
 # sudo dnf groupupdate core
 
-echo "::${BPurple}Setting up flatpak${NONE}"
+echo -e "::${BPurple}Setting up flatpak${NONE}"
 # sudo dnf install flatpak
 # flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
-echo "::${BPurple}Optimizing Multimedia codec${NONE}"
+echo -e "::${BPurple}Optimizing Multimedia codec${NONE}"
 # sudo dnf install ffmpeg libavcodec-freeworld --best --allowerasing
 # sudo dnf groupupdate multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
 # sudo dnf groupupdate sound-and-video
@@ -49,7 +49,7 @@ echo "::${BPurple}Optimizing Multimedia codec${NONE}"
 
 
 
-echo "::${BPurple}Installing recommended Applications${NONE}"
+echo -e "::${BPurple}Installing recommended Applications${NONE}"
 # installing packages from dnf
 sudo dnf update
 sudo dnf install git gh gcc neofetch micro xclip htop
@@ -77,7 +77,7 @@ sudo dnf install brave-browser
 
 # Visual studio code
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+echo -e -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
 dnf check-update
 sudo dnf install code
 
