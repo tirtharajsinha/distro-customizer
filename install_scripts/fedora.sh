@@ -32,17 +32,17 @@ sudo dnf update
 
 
 echo -e "::${BPurple}setting up RPM fusion repo${NONE}"
-sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm 
+sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm 
 
 echo -e "::${BPurple}Updating rpmfusion core${NONE}"
 sudo dnf groupupdate core
 
 echo -e "::${BPurple}Setting up flatpak${NONE}"
-sudo dnf install flatpak
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+sudo dnf -y install flatpak
+sudo flatpak remote-add --if-not-exists -y flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 echo -e "::${BPurple}Optimizing Multimedia codec${NONE}"
-sudo dnf install ffmpeg libavcodec-freeworld --best --allowerasing
+sudo dnf install -y ffmpeg libavcodec-freeworld --best --allowerasing
 sudo dnf groupupdate multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
 sudo dnf groupupdate sound-and-video
 
@@ -88,7 +88,7 @@ sudo dnf install -y dbeaver-ce-latest-stable.x86_64.rpm
 
 echo -e "::${BPurple}Setting up KVM/QEMU${NONE}"
 dnf groupinfo virtualization
-sudo dnf install @virtualization
+sudo dnf install -y @virtualization
 sudo systemctl start libvirtd
 sudo systemctl enable libvirtd
 sudo lsmod | grep kvm
