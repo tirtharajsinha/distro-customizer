@@ -53,7 +53,7 @@ echo -e "::${BPurple}Installing recommended Applications${NONE}"
 # installing packages from dnf
 sudo dnf update
 sudo dnf install -y git gh gcc neofetch micro xclip htop
-sudo dnf install -y kitty VirtualBox remmina vlc timeshift ufw zsh ranger distrobox eza fzf podman
+sudo dnf install -y kitty remmina vlc timeshift ufw zsh ranger distrobox eza fzf podman
 
 # web app manager install
 sudo dnf copr enable kylegospo/webapp-manager
@@ -86,4 +86,16 @@ sudo dnf -y install code
 wget https://dbeaver.io/files/dbeaver-ce-latest-stable.x86_64.rpm
 sudo dnf install -y dbeaver-ce-latest-stable.x86_64.rpm
 
+echo -e "::${BPurple}Setting up KVM/QEMU${NONE}"
+dnf groupinfo virtualization
+sudo dnf install @virtualization
+sudo systemctl start libvirtd
+sudo systemctl enable libvirtd
+sudo lsmod | grep kvm
 
+echo -e "::${BPurple}Enabling Firewall${NONE}"
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh 
+sudo ufw enable
+sudo ufw start
