@@ -51,5 +51,12 @@ then
     echo -e "${PURPLE}Initializing arch setup ${NONE}"
 fi 
 
-echo -e "${YELLOW}Initializing shell customization ${NONE}"
-source install_scripts/customization.sh
+if [ $PLATFORM -eq -1 ]
+then
+   echo "aborting Customization, is apply customization manually run:"
+   echo -e "${BRed}sh install_scripts/customization.sh${NONE}"
+
+else
+   echo -e "${YELLOW}Initializing shell customization ${NONE}"
+   source install_scripts/customization.sh
+fi

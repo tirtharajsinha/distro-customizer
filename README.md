@@ -24,5 +24,5 @@ sudo pacman -S git
 - Run installer
 
 ```
-./install.sh
+sh install.sh
 ```
