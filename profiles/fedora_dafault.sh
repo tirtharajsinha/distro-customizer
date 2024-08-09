@@ -1,4 +1,8 @@
-source includes/color.sh
+TARGET_DISTRONAME="fedora"
+
+# Distro compatibility check
+source ./includes/distro_check.sh
+
 
 echo -e "${BBlue}"
 cat <<"EOF"
@@ -56,12 +60,12 @@ sudo dnf install -y git gh gcc neofetch micro xclip htop
 sudo dnf install -y kitty remmina vlc timeshift ufw zsh ranger distrobox eza fzf podman
 
 # web app manager install
-sudo dnf copr enable kylegospo/webapp-manager
+sudo dnf copr enable -y kylegospo/webapp-manager
 sudo dnf install -y webapp-manager
 
 
 #Onedriver
-sudo dnf copr enable jstaf/onedriver
+sudo dnf copr enable -y jstaf/onedriver
 sudo dnf -y install onedriver
 
 # Flatpak Installation
@@ -70,13 +74,13 @@ sudo flatpak install cc.arduino.IDE2 md.obsidian.Obsidian org.telegram.desktop o
 # Third Party Native app installation
 
 # Brave
-sudo dnf install dnf-plugins-core
-sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager -y --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+sudo rpm --import -y https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 sudo dnf install -y brave-browser
 
 # Visual studio code
-sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo rpm --import -y https://packages.microsoft.com/keys/microsoft.asc
 echo -e -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
 dnf check-update
 sudo dnf -y install code
@@ -85,7 +89,9 @@ sudo dnf -y install code
 # Dbeaver
 wget https://dbeaver.io/files/dbeaver-ce-latest-stable.x86_64.rpm
 sudo dnf install -y dbeaver-ce-latest-stable.x86_64.rpm
+rm -r dbeaver*
 
+# Setup KVM/QEMU
 echo -e "::${BPurple}Setting up KVM/QEMU${NONE}"
 dnf groupinfo virtualization
 sudo dnf install -y @virtualization

@@ -22,41 +22,47 @@ echo -e "${GREEN}by Tirtharaj Sinha${NONE}\n\n"
 
 #!/bin/bash
 
-PS3="Select item please: "
-
-items=("dabian" "fedora" "arch")
-PLATFORM=-1
-
-select item in "${items[@]}" Quit
+PS3="Select profile to continue: "
+i=0
+items=()
+for entry in "profiles"/*
 do
-    case $REPLY in
-        1) echo -e "You are using ${CYAN} $item ${NONE}, we will use ${YELLOW}--> apt <--${NONE} as packate manager"; PLATFORM=$REPLY; break;;
-        2) echo -e "You are using ${CYAN} $item ${NONE}, we will use ${YELLOW}--> dnf <--${NONE} as packate manager"; PLATFORM=$REPLY; break;;
-        3) echo -e "You are using ${CYAN} $item ${NONE}, we will use ${YELLOW}--> pacman <--${NONE} as packate manager"; PLATFORM=$REPLY; break;;
-        $((${#items[@]}+1))) echo -e "${RED}::Aborting Setup${NONE}"; break;;
-        *) echo "Ooops - unknown choice $REPLY";;
-    esac
+  if [ -f "$entry" ];then
+    profile=$(basename -a -s .sh ${entry})
+    filename=$(basename ${entry})
+    items[$i]=${filename}
+    let i+=1
+    echo -e "${i}) ${profile}"
+  fi
 done
 
-if [ $PLATFORM -eq 1 ]
-then
-    echo -e "${PURPLE}Initializing dabian setup${NONE}"
 
-elif [ $PLATFORM -eq 2 ]
+if [ ${#items[@]} -eq 0 ]
 then
-    echo -e "${PURPLE}Initializing fedora setup ${NONE}"
-    source install_scripts/fedora.sh
-elif [ $PLATFORM -eq 3 ]
-then
-    echo -e "${PURPLE}Initializing arch setup ${NONE}"
-fi 
-
-if [ $PLATFORM -eq -1 ]
-then
-   echo "aborting Customization, is apply customization manually run:"
-   echo -e "${BRed}sh install_scripts/customization.sh${NONE}"
-
+    echo -e "No profiles found."
+    echo -e "- Create a new profile"
+    echo -e "- If created, move profile file to ${YELLOW}/profiles${NONE}"
+    exit 1
 else
-   echo -e "${YELLOW}Initializing shell customization ${NONE}"
-   source install_scripts/customization.sh
+    echo -e "$((${#items[@]}+1))) Exit"
+    echo -e "${#items[@]} profiles found."
 fi
+
+while true ;
+do
+PLATFORM=-1
+read -p "$PS3" PLATFORM
+if [ $PLATFORM -eq $((${#items[@]}+1)) ]
+then
+    echo -e "${PURPLE}Aborting Distro-Customizer execution${NONE}"
+    break
+elif [ $PLATFORM -gt $((${#items[@]}+1)) ] || [ $PLATFORM -lt 1 ]
+then
+    echo -e "${RED}Invalid Choice!! Select again${NONE}"
+else
+    echo -e "${CYAN}Initializing ${items[$((${PLATFORM}-1))]} setup... ${NONE}"
+    source profiles/${items[$((${PLATFORM}-1))]}
+    break
+fi 
+done
+
